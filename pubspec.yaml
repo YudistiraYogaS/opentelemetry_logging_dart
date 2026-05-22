@@ -7,7 +7,7 @@ topics:
   - opentelemetry
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.4.4
 
 dependencies:
   fixnum: ^1.1.1

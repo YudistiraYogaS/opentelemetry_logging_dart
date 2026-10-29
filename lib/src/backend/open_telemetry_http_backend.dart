@@ -12,6 +12,7 @@ class OpenTelemetryHttpBackend implements OpenTelemetryBackend {
 
   final http.Client _client;
   final bool _ownClient;
+  final Map<String, String> _customHeaders;
   final Future<void> Function({
     required int statusCode,
     required String body,
@@ -23,6 +24,7 @@ class OpenTelemetryHttpBackend implements OpenTelemetryBackend {
   OpenTelemetryHttpBackend({
     required Uri endpoint,
     Map<String, Object?>? resourceAttributes,
+    Map<String, String>? customHeaders,
     http.Client? client,
     Future<void> Function({
       required int statusCode,
@@ -30,6 +32,7 @@ class OpenTelemetryHttpBackend implements OpenTelemetryBackend {
     })? onPostError,
   })  : _endpoint = endpoint,
         _resourceAttributes = resourceAttributes,
+        _customHeaders = customHeaders ?? {'Content-Type': 'application/json'},
         _client = client ?? http.Client(),
         _ownClient = client == null,
         _onPostError = onPostError;
@@ -57,7 +60,7 @@ class OpenTelemetryHttpBackend implements OpenTelemetryBackend {
     });
     final res = await _client.post(
       _endpoint,
-      headers: {'Content-Type': 'application/json'},
+      headers: _customHeaders,
       body: payload,
     );
 
